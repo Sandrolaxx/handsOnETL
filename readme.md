@@ -156,12 +156,6 @@ Além da ordem de execução, um hop também especifica a condição em que o pr
 
 ---
 
-## Realizando conexão com PostgreSQL e criando tabelas
-
-Passo a passo e etc
-
----
-
 ## Estudo de Caso
 
 Para exercitarmos os nossos conhecimentos, faremos um estudo de caso com o Pentaho e com a base de dados postgres que acabamos de popular, extraindo dados de um arquivo csv, de uma planilha Excel e de um DER, transformando-os em tabelas de uma Staging Area e carregando os dados em um modelo dimensional sobre vendas.
@@ -309,3 +303,50 @@ O terceiro estágio do ETL (Transform) será a transformação (seleção, desno
 Para tanto, criaremos as tabelas abaixo na Staging Area, com os atributos físicos alinhados ao modelo dimensional.
 
 !["Figura 13"](/images/figura13.svg) - Figura 13
+
+STG_PRODUTO: Será criada para receber os dados da junção(desnormalização) entre as tabelas STG_T_SV_PRODUTO e STG_T_SV_PRODUTO;
+
+STG_FUNCIONARIO: Receberá dados da tabela STG_T_SV_FUNCIONARIO;
+
+STG_LOJA: Será criada para receber os dados da junção das tabelas STG_T_SV_LOJA e STG_T_SV_UF, STG_T_SV_CIDADE, SGT_T_SV_LOGRADOURO e STG_T_SV_ENDERECO;
+
+STG_CLIENTE: Será criada para receber os dados da junção das tabelas STG_T_SV_CLIENTE e STG_T_SV_TIPO_CLIENTE;
+
+STG_VENDA: Será criada para receber os dados da junção das tabelas STG_T_SV_NOTA_FISCAL, STG_T_SV_ITEM_NOTA_FISCAL e STG_T_SV_CLASSIFICACAO_FISCAL;
+
+STG_PROMOCOES: Será criada para receber os dados da junção de STG_ARQ_PROMOCOES e STG_ARQ_PROMOCOES_OBS.
+
+---
+
+## Tabelas Modelos Dimensional e Cargas
+
+O quarto estágio do ETL (Load) será a carga dos dados transformados na Staging, nas tabelas dimensões e na tabela fato na Área de Apresentação do DW.
+
+!["Figura 14"](/images/figura14.svg) - Figura 14
+
+Para tanto, criaremos as tabelas DIM e FATO, no Data Mart de Vendas:
+
+* DIM_VENDA_PROMOCAO com carga a partir da tabela STG_PROMOCOES;
+* DIM_VENDA_PRODUTO com carga a partir da tabela STG_PRODUTO;
+* DIM_VENDA_LOJA com carga a partir da tabela STG_LOJA;
+* DIM_VENDA_CLIENTE com carga a partir da tabela STG_CLIENTE;
+* DIM_VENDA_VENDEDOR com carga a partir da tabela STG_FUNCIONARIO;
+* DIM_VENDA_DATA com carga por rotina própria;
+* FATO_VENDAS com carga a partir da tabela STG_VENDAS.
+
+---
+
+## Criando e carregando a base de dados do Sistema SV
+
+A criação e a carga da base de dados de um sistema OLTP, origem comum dos dados de um DW, nem de longe faz parte do escopo de um projeto ETL. Os sistemas OLTP existem para armazenar dados do dia a dia de um negócio, geralmente processam enormes quantidades de operações CRUD realizadas pelos usuários.
+
+Em nosso exemplo, o sistema SV é responsável por armazenar as informações sobre as vendas, por meio dos registros de Nota Fiscal, Item da Nota Fiscal e de todos os demais que são necessários para se registrar uma venda.
+
+**Realizando a criação da base de dados:**
+Utilizando uma ferramemnta como DBeaver(https://dbeaver.io/) podemos nos conectar na instância postegreSQL que criamos e criar uma base de dados de teste ou utilizar a default public, então vamos realizar a criação das tabelas do Sistema SV com base em nosso DER, podemos executar o script [queryCriacaoSistemaSV.sql](/arquivosETL/queryCriacaoSistemaSV.sql), que está presente em arquivosETL.
+
+---
+
+## Criando tabelas na Staging Area para cópia dos dados do Sistema SV e arquivos CSV e XLSX
+
+Para criar as tabelas que receberão a extração dos dados do Sistema SV e dos arquivos CSV e XLSX, conecte-se no PostgreSQL utilizando o DBeaver e execute o seguinte script [queryCriacaoStagingArea.sql](/arquivosETL/queryCriacaoStagingArea.sql).
