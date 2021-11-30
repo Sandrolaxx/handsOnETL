@@ -349,4 +349,49 @@ Utilizando uma ferramemnta como DBeaver(https://dbeaver.io/) podemos nos conecta
 
 ## Criando tabelas na Staging Area para cópia dos dados do Sistema SV e arquivos CSV e XLSX
 
+Os arquivos CSV e XLSX são respectivamente o [promocoes.csv](/arquivosETL/promocoes.csv) e o [promocoes_obs.xlsx](/arquivosETL/promocoes_obs.xlsx).
+
 Para criar as tabelas que receberão a extração dos dados do Sistema SV e dos arquivos CSV e XLSX, conecte-se no PostgreSQL utilizando o DBeaver e execute o seguinte script [queryCriacaoStagingArea.sql](/arquivosETL/queryCriacaoStagingArea.sql).
+
+---
+
+## Criando as tabelas Dimensionais e Fato
+
+O modelo dimensional receberá a carga dos dados, após as transformações do processo ETL. Em projetos de porte, a criação destas tabelas ocorre em servidores específicos para o DW. Em nosso estudo de caso, criaremos em nossa área do Oracle FIAP, onde a Staging Area foi criada. Conecte-se utilizando o SQL Developer e execute o script [queryCriacaoTabelasDimensionais.sql](/arquivosETL/queryCriacaoTabelasDimensionais.sql).
+
+---
+
+## Carregando a Dimensão Data
+
+A dimensão Data é a única dimensão que possui carga própria. Ela é um grande calendário, com os detalhes de todos os dias de um determinado período. O script [queryCarregarDimensaoData.sql](/arquivosETL/queryCarregarDimensaoData.sql) popula a tabela com todos os dias, entre os anos de 2000 e 2020.
+
+Através desta dimensão, os tomadores de decisão poderão filtrar as vendas por dia da semana, feriados, véspera de feriados, dias pós feriado, mês, bimestre, semestre, ano, entre outros.
+
+---
+
+## Criando as tabelas na Staging Area para armazenar transformações
+
+Entre os dados extraídos das fontes e a carga nas dimensões e fato, em nosso estudo de caso, criaremos tabelas que receberão as transformações do terceiro estágio do ETL, seleções, desnormalizações, decodificações e concatenações dos dados são tarefas comuns dessa etapa, preparando-os para carga nas dimensões e na tabela fato.
+
+Script de criação da tabela Stagin Area que vai armazenar as transformações é o [queryCriacaoStgTransformacao.sql](/arquivosETL/queryCriacaoStgTransformacao.sql).
+
+---
+
+## Estudo de Caso
+
+Pentaho PDI - Extração de dados dos arquivos CSV E XLSX.
+
+O primeiro estágio do ETL (Extract) será a extração dos dados dos arquivos csv e xlsx para gravação em tabelas na Staging Area.
+
+* No Spoon, crie uma transformação
+
+!["Figura 15"](/images/figura15.jpg) - Figura 15
+
+* CTRL + S e salve com o nome de TRANS_EXTRACT_CSV.
+
+!["Figura 16"](/images/figura16.jpg) - Figura 16
+
+* Na aba Design \ input selecione, arraste e solte a transformação o step CSV file input.
+
+!["Figura 17"](/images/figura17.jpg) - Figura 17
+
