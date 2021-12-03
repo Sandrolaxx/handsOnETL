@@ -785,3 +785,359 @@ Imagine que a área de negócio gostaria de ter um filtro com a descrição da b
 ---
 
 ## Transformação de Vendas
+
+A última junção será entre NF, Item da NF e classificação fiscal. Para implementá-la, crie uma transformação chamada TRANS_TRANSFORM_VENDAS, adicione um step Table Input, depois um Select values e um Table Input. Renomeie os componentes e crie os hops entre eles.
+
+Desta vez, criaremos manualmente a query do Table Input. Aplicaremos uma conversão sobre a coluna DT_EMISSAO para obter a SK_DATA numérica e no formato YYYYMMDD.
+
+* Dê um duplo clique no componente e configure a query.
+
+```SQL
+SELECT  NF.NR_NOTA_FISCAL,
+        NF.CD_CLIENTE,
+        NF.NR_MATRICULA,
+        TO_CHAR(NF.DT_EMISSAO, 'YYYYMMDD') AS SK_DATA,
+        NF.DT_EMISSAO,
+        NF.VL_TOTAL_NF,
+        NF.CD_LOJA,
+        NF.CD_PROMOCAO,
+        INF.CD_PRODUTO,
+        INF.QT_VENDIDA,
+        INF.VL_PRECO_UNITARIO
+    FROM    STG_T_SV_NOTA_FISCAL NF,
+            STG_T_SV_ITEM_NOTA_FISCAL INF
+    WHERE NF.NR_NOTA_FISCAL = INF.NR_NOTA_FISCAL
+```
+
+!["Figura 101"](/images/figura101.jpg) - Figura 101
+
+*  Dê duplo clique em Table output e configure-o, conforme imagem. Para evitar erros na Transformação, configure Target table através do botão Navega...
+
+!["Figura 101"](/images/figura102.jpg) - Figura 102
+
+* Dê duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme a Figura 103.
+
+!["Figura 103"](/images/figura103.jpg) - Figura 103
+
+* Os campos devem ser associados, conforme Figura 104.
+
+!["Figura 104"](/images/figura104.jpg) - Figura 104
+
+* O resultado do mapeamento será apresentado.
+
+!["Figura 105"](/images/figura105.jpg) - Figura 105
+
+* Execute a transformação, o log não trará erros e a aba Preview data apresentará as linhas juntadas pela query, a coluna SK_DATA com o valor formatado e todos os demais valores armazenados na tabela STG_VENDAS.
+
+!["Figura 106"](/images/figura106.jpg) - Figura 106
+
+---
+
+## Pentaho PDI – Carga no Modelo Dimensional
+
+### Sobre a carga das dimensões
+
+Uma das principais características de um modelo estrela é a capacidade de manter o histórico de eventos de um determinado negócio.
+
+Em nosso estudo de caso, estamos analisando os eventos de Vendas por Data, por Cliente, por Promoções, por Loja, por Produto e por Vendedor (Funcionário).
+
+Lembro que essas perspectivas de análise são as dimensões do nosso modelo estrela. Quando uma informação muda no sistema OLTP, precisamos manter a coerência e a fidelidade com os fatos de negócio no modelo estrela.
+
+Imagine que o nome de uma cliente foi alterado no cadastro de clientes do sistema SV, qual será o impacto no modelo dimensional?
+
+O usuário de negócio pode considerar que a mudança de nome é significante, pois pode indicar que a cliente casou e, portanto, após a mudança de nome, poderá ocorrer uma alteração significante em seu costume de consumo. Sendo assim, por requisito de negócio, nosso DM precisa manter o histórico de compras com o nome antigo e relacionar novas compras ao novo nome, sem perder a informação de que as vendas são do mesmo cliente.
+
+Essa situação é tratada por uma das técnicas de Slowly Changing Dimensions (SCD). Utilizaremos na alteração do nome o SCD Híbrido, conhecido também como SCD do tipo seis.
+
+O SCD do tipo seis adiciona uma linha na dimensão, para armazenar os dados que sofreram atualização e incorpora atributos de datas de início, fim e versão na dimensão, para que as linhas de fato possam ser filtradas (por antes ou pós mudança) ou agrupadas pela natural key. Bem, essa opção foi selecionada para resolver a mudança de nome, mas se a data de nascimento do cliente mudar?
+
+Devemos considerar que o cliente nasceu novamente ou que o dado foi corrigido no sistema SV? Corrigido! Concorda?
+
+Sendo assim, o tipo seis não é a melhor opção. Para este caso, o SCD tipo um, sobrescrever o valor antigo, com o novo valor, é a melhor solução.
+
+Análises e tratativas deverão ser feitas em todos os atributos das cinco dimensões. Se o ETL fosse feito em PL/SQL ou em outra linguagem, não é difícil imaginarmos o enorme esforço de codificação, para tratar as regras campo a campo e testar.
+
+Por sorte, estamos utilizando o PDI e ele nos fornece um Step chamado Dimension lookup/update que pode ser encontrado na aba Data Warehouse. Esse componente é capaz de executar os tipos de SCD e gerenciar os valores das Surrogate Keys.
+
+Neste ponto, já estamos preparados para a etapa de Load do nosso ETL, todas as transformações necessárias foram feitas e os dados das dimensões estão preparados na Staging nas tabelas STG_CLIENTE, STG_PROMOCOES, STG_LOJA, STG_PRODUTO e STG_FUNCIONARIO.
+
+Então, vamos em frente!
+
+---
+
+## Carga da Dimensão Cliente
+
+* Para a carga da dimensão cliente, crie uma transformação chamada de TRANS_LOAD_CLIENTE e inclua os componentes, conforme a Figura 107.
+
+!["Figura 107"](/images/figura107.jpg) - Figura 107
+
+* Dê um duplo clique no Table input e configure-o utilizando o botão Get SQL Select statement..., conforme a Figura 108.
+
+!["Figura 108"](/images/figura108.jpg) - Figura 108
+
+* No Select Values, apenas clique em Get fields to Select. Não é necessário fazer o Edit Mapping.
+
+!["Figura 109"](/images/figura109.jpg) - Figura 109
+
+* No Dimension lookup/update, configure-o conforme a imagem. O Dimension Lookup usará o atributo SK_CLIENTE como surrogate key e incrementará o seu valor automaticamente; opcionalmente, poderíamos utilizar uma sequence do Oracle ou um atributo auto incremental, se utilizássemos um banco de dados com este tipo de campo.
+
+!["Figura 110"](/images/figura110.jpg) - Figura 110
+
+* Com a opção Update the dimension selecionada, na primeira carga, como a dimensão está sem registros e não há o que atualizar, todas as linhas vindas do fluxo serão inseridas e terão como DTC_INI o valor de 01/01/1900, como DTC_FIM de 01/01/2199 e como VERSION o valor 1.<br/> Na segunda carga, o Dimension Lookup comparará os valores do NK_CLIENTE vindos do fluxo, com os valores já armazenados na dimensão cliente. Quando o código do cliente vindo do fluxo for igual ao armazenado na dimensão, os demais atributos do fluxo serão comparados com os valores gravados na dimensão e, em caso de mudanças, as regras de SCD serão aplicadas.<br/> Para configurar as regras campo a campo, selecione a aba Fields e clique no botão Get Fields. Configure os atributos, conforme a Figura 111.
+
+!["Figura 111"](/images/figura111.jpg) - Figura 111
+
+* Entendendo as regras. A partir da segunda carga, caso os atributos NM_CLIENTE, DS_SEXO, NM_TIPO e DS_TIPO de um cliente já carregado na dimensão sofram mudanças de valor, uma nova linha será criada na dimensão com o valor 2 em version, com o campo DTC_INI com a data da carga e o DTC_FIM com 2019. A linha anterior do cliente, se manterá na versão 1 e terá o atributo DTC_FIM atualizado com a data da carga.<br/> Já o atributo DT_NASCIMENTO, caso sofra uma alteração a partir da segunda carga, a configuração Punch through atualizará todos os registros do cliente contidos na dimensão. **Importante, a opção Update atualiza apenas o registro com o maior version, já Punch through, atualiza todos os registros, independentemente da versão.** <br/> Execute a transformação e novamente, caso tudo tenha sido feito e configurado conforme as instruções, o log não trará erros e a carga entre a Staging e a Dimensão será realizada com sucesso.
+
+!["Figura 112"](/images/figura112.jpg) - Figura 112
+
+* No DBeaver, faça um Select na dimensão cliente e veja o resultado. Perceba que a SK_CLIENTE foi incrementada pelo Dimension lookup/update, o atributo version e as datas de início e fim também foram populados.
+
+!["Figura 113"](/images/figura113.jpg) - Figura 113
+
+* Também podemos perceber que uma linha com SK_CLIENTE de valor 0 foi criada na dimensão. Essa linha será utilizada pelo PDI para tratar erros do sistema SV. Caso uma venda sem cliente seja trazida pelo ETL, ela será relacionada ao registro de SK igual a zero na tabela Fato. Sendo assim, é uma boa prática fazer um update nesta linha para algo como:
+
+```SQL
+UPDATE DIM_VENDA_CLIENTE SET 	
+    NM_CLIENTE = 'CLIENTE NÃO ENCONTRADO', 
+    NM_TIPO = 'DESCONHECIDO', 
+    DS_TIPO = 'DESCONHECIDO ' 
+WHERE 
+    SK_CLIENTE = 0;
+```
+
+!["Figura 114"](/images/figura114.jpg) - Figura 114
+
+---
+
+## Carga da Dimensão Produto
+
+Como já conhecemos as configurações dos Steps Table input e Select values, vamos focar no Dimension lookup/update de agora em diante. Crie uma transformação chamada de TRANS_LOAD_PRODUTO, adicione os componentes para a dimensão PRODUTO, configure o Table input para a tabela STG_PRODUTO, faça o Get Fields no Select Values e configure o Dimension, conforme a Figura 115:
+
+!["Figura 115"](/images/figura115.svg) - Figura 115
+
+A decisão de criar uma nova linha ou atualizar as anteriores deve ser tomada campo a campo pelos usuários do negócio, eles que devem determinar o que é relevante manter como histórico e o que deve ser sobrescrito. Na análise de vendas por produto, em nosso exemplo, consideramos que a alteração da descrição do produto não deve criar uma nova linha, pois não implica em uma grande mudança para o negócio, mas as demais colunas, sim.
+
+!["Figura 116"](/images/figura116.jpg) - Figura 116
+
+---
+
+## Carga da Dimensão Loja
+
+Crie uma transformação chamada de TRANS_LOAD_LOJA, adicione os componentes para a dimensão LOJA, configure o Table input para a tabela STG_LOJA, faça o Get Fields no Select Values e configure o Dimension, conforme a Figura 117:
+
+!["Figura 117"](/images/figura117.svg) - Figura 117
+
+!["Figura 118"](/images/figura118.jpg) - Figura 118
+
+---
+
+## Carga da Dimensão Promoção
+
+Crie uma transformação chamada de TRANS_LOAD_PROMOCAO, adicione os componentes para a dimensão PROMOCAO, configure o Table input para a tabela STG_PROMOCOES, faça o Get Fields no Select values e configure o Dimension, conforme a Figura 119:
+
+!["Figura 119"](/images/figura119.svg) - Figura 119
+
+!["Figura 120"](/images/figura120.jpg) - Figura 120
+
+---
+
+## Carga da Dimensão Vendedor
+
+Como nos passos anteriores, crie uma transformação agora chamada TRANS_LOAD_VENDEDOR, adicione os componentes para a dimensão VENDEDOR, configure o Table input para a tabela STG_FUNCIONARIO, faça o Get Fields no Select values e configure o Dimension, conforme imagem:
+
+!["Figura 121"](/images/figura121.svg) - Figura 121
+
+!["Figura 122"](/images/figura122.jpg) - Figura 122
+
+---
+
+## Carga da Fato Vendas
+
+A carga da tabela fato pelo PDI utiliza apenas Steps já conhecidos por nós, Table input, Database lookups, Select values e um Table output. A principal configuração acontecerá no relacionamento dos lookups. Com certeza, você já percebeu que o papel desse Step é fazer um join entre tabelas e, até o momento, utilizamos apenas uma coluna para fazê-lo. Para tratarmos as modificações que podem ocorrer nas dimensões e pegar a Surrogate Key, vamos utilizar mais duas colunas, a DTC_INI e a DTC_FIM.
+
+Em todos os lookups, vamos comparar a data de emissão da nota fiscal, com as datas de início e fim de cada registro das dimensões e, somente se a data de emissão estiver entre o intervalo, a SK da dimensão será selecionada para ser gravada na FATO_VENDAS. Desta forma, garantimos que o histórico não será perdido.
+
+!["Figura 123"](/images/figura123.jpg) - Figura 123
+
+Outra configuração necessária é o preenchimento da coluna Default. Ela será preenchida com zero, ao lado das SKs, em todos os lookups, pois se o join não for satisfeito, o zero será gravado na FATO e a primeira linha da dimensão será relacionada para filtro de não encontrado. Como exemplo, relembre a primeira linha da dimensão cliente, ela foi criada pelo Dimension lookup, para tratar os casos de clientes não encontrados.
+
+Não será necessário incluir um lookup para a dimensão data, uma vez que geramos a SK_DATA com o valor correto, na carga da dimensão.
+
+Crie uma transformação chamada TRANS_LOAD_VENDAS e configure-a conforme imagem TRANS_LOAD_VENDAS.
+
+!["Figura 124"](/images/figura124.svg) - Figura 124
+
+Table input de STG_VENDAS:
+
+!["Figura 125"](/images/figura125.jpg) - Figura 125
+
+!["Figura 126"](/images/figura126.jpg) - Figura 126
+
+---
+
+## Database Lookup Da DIM_VENDA_VENDEDOR
+
+O objetivo desse lookup é obter a SK_VENDEDOR, de acordo com a data de emissão da nota fiscal.
+
+Clique em Obtem Campos e só deixe a linha NK_VENDEDOR = NK_VENDEDOR: O Database lookup fará o join com a natural key do vendedor que virá da stage vendas e a natural key de vendedor, armazenada na dimensão vendedor.
+
+Configure DTC_INI e DTC_FIM manualmente, comparando-os com a DT_EMISSAO: Para garantir que a versão correta do vendedor será relacionada à FATO, filtramos o join pela data da venda, garantindo que a data de início da versão do vendedor será menor, igual à data de emissão da nota, e a data de fim da versão do vendedor será maior que a data de emissão da nota.
+
+Clique em Obtem campos lookup e deixe apenas a SK_VENDEDOR: Se ocorrer uma modificação lenta na dimensão vendedor, a sk_vendedor correta será filtrada neste lookup pela data da emissão da nota, para ser gravada na FATO_VENDAS.
+
+---
+
+## Database Lookup Da DIM_VENDA_PROMOCAO
+
+* O objetivo desse lookup é obter a SK_PROMOCAO de acordo com a data de emissão da nota fiscal.
+
+!["Figura 127"](/images/figura127.jpg) - Figura 127
+
+---
+
+## Database Lookup Da DIM_VENDA_CLIENTE
+
+* O objetivo desse lookup é obter a SK_CLIENTE de acordo com a data de emissão da nota fiscal.
+
+!["Figura 128"](/images/figura128.jpg) - Figura 128
+
+---
+
+## Database Lookup Da DIM_VENDA_LOJA
+
+* O objetivo desse lookup é obter a SK_LOJA de acordo com a data de emissão da nota fiscal.
+
+!["Figura 129"](/images/figura129.jpg) - Figura 129
+
+---
+
+## Database Lookup Da DIM_VENDA_PRODUTO
+
+* O objetivo desse lookup é obter a SK_PRODUTO de acordo com a data de emissão da nota fiscal.
+
+!["Figura 130"](/images/figura130.jpg) - Figura 130
+
+---
+
+## Table Output Da FATO_VENDAS
+
+* Configure o Step conforme a Figura 131.
+
+!["Figura 131"](/images/figura131.jpg) - Figura 131
+
+---
+
+## Database Lookup Da DIM_VENDA_PROMOCAO
+
+* Configure o Step conforme as imagens:
+
+!["Figura 132.1"](/images/figura132.1.jpg) - Figura 132.1
+
+* Edit Mapping
+
+!["Figura 132.2"](/images/figura132.2.jpg) - Figura 132.2
+
+* Resultado do Get fields e Edit
+
+!["Figura 132.3"](/images/figura132.3.jpg) - Figura 132.3
+
+* Resultado da execução, com as SKs obtidas nos lookups
+
+!["Figura 132.4"](/images/figura132.4.jpg) - Figura 132.4
+
+---
+
+## Organizando o ETL em JOBs
+
+O objetivo desta etapa será organizar o ETL em quatro Jobs, o primeiro para realizar a etapa de Extract, o segundo para a etapa de Transform, o terceiro para Load e o quarto, para ser um job central, responsável por orquestrar a execução dos três primeiros.
+
+---
+
+## Criando o primeiro Job – ETL etapa EXTRACT
+
+* Crie um novo Job e salve-o com o nome de JOB-EXTRACT. Esse Job será responsável por executar as transformações que buscam dados no sistema SV e criam cópias na Staging Area.
+
+!["Figura 133"](/images/figura133.jpg) - Figura 133
+
+* Das abas General, Mail e Condições arraste os Steps Start, Check if files exists, Transformations e Mails, conforme imagem: Figura 134.<br/> O Step START não será configurado neste Job. 
+
+!["Figura 134"](/images/figura134.jpg) - Figura 134
+
+* **Check if files exist:** Esse Step verificará se os arquivos estão na pasta para serem importados, clique no botão arquivos e configure o path até eles, adicione-os uma a um com o botão adicionar.
+
+!["Figura 135"](/images/figura135.jpg) - Figura 135
+
+* **Transformation:** Esse Step chamará uma Transformação salva no repositório, clique em Browse, escolha a TRANS_EXTRACT_CSV, clique em Open e depois em OK. Repita essa ação para os demais Steps do tipo Transformation.
+
+!["Figura 136"](/images/figura136.jpg) - Figura 136
+
+* **Mail OK:** Esse Step enviará um email se todas as transformações forem bem-sucedidas, configure os e-mails de envio e destino, os dados do servidor de email e autenticação e na mensagem, o assunto e o comentário.
+
+!["Figura 137"](/images/figura137.jpg) - Figura 137
+
+* **Mail NOK:** Esse Step enviará um e-mail se algum erro nas transformações acontecer, configure os e-mails de envio e destino, os dados do servidor de e-mail e autenticação, conforme passos anteriores. Na mensagem, a prioridade, o assunto e o comentário. Em anexos, o tipo de arquivo e o nome do zip.
+
+!["Figura 138"](/images/figura138.jpg) - Figura 138
+
+---
+
+## Criando o segundo Job – ETL etapa TRANSFORM
+
+Crie um novo Job e salve-o com o nome de JOB-TRANSFORM, configure-o conforme imagem. Utilize os conhecimentos obtidos na configuração do JOB-EXTRACT. Esse Job será responsável por executar as transformações que transformam os dados (Seleções, Junções, Decodificações e Concatenações) na Staging Area.
+
+!["Figura 139"](/images/figura139.jpg) - Figura 139
+
+---
+
+## Criando o terceiro Job – ETL etapa LOAD
+
+Crie um novo Job e salve-o com o nome de JOB-LOAD, configure-o conforme imagem "JOB-LOAD". Utilize os conhecimentos obtidos na configuração dos dois jobs anteriores. Esse Job será responsável por executar as transformações que fazem a carga no modelo dimensional, dos dados transformados na Staging Area.
+
+!["Figura 140"](/images/figura140.jpg) - Figura 140
+
+---
+
+## Criando o quarto Job – Orquestrando o ETL
+
+* Crie um novo Job e salve-o com o nome de JOB-ETL-VENDAS, configure-o conforme imagem abaixo. Esse Job será responsável por executar o ETL como um todo, configurando o horário de início, conforme requisito funcional.
+
+!["Figura 141"](/images/figura141.jpg) - Figura 141
+
+* **Configurando o START:** Em nossos requisitos de abordagem, definimos que as rotinas de extração serão disparadas por jobs do Pentaho PDI agendados para iniciar a partir da 01:00am, após o término das rotinas contábeis e do backup da base de dados do sistema SV. Sendo assim, configure o Job Scheduling para que tenha execução repetida, diariamente a 01:00 am.
+
+!["Figura 142"](/images/figura142.jpg) - Figura 142
+
+* **Job:** Esse Step chamará um Job salvo no repositório, clique em Browse, escolha a JOB-EXTRACT, clique em Open e, depois, em OK. Repita essa ação para os demais Jobs, de acordo com a Figura 143.
+
+!["Figura 143"](/images/figura143.jpg) - Figura 143
+
+---
+
+## Testando o ETL
+
+Desfaça a configuração do Job Scheduling e execute o JOB-ETL-VENDAS, Figura 144.
+
+No Outllook, as quatro mensagens de OK serão recebidas, cada qual com o dia e horários de início e fim do job e detalhes de cada Step executado nele, Figura 144.
+
+!["Figura 144"](/images/figura144.jpg) - Figura 144
+
+!["Figura 145"](/images/figura145.jpg) - Figura 145
+
+---
+
+## EMAIL ETL - Transform OK
+
+!["Figura 146"](/images/figura146.jpg) - Figura 146
+
+!["Figura 147"](/images/figura147.jpg) - Figura 147
+
+!["Figura 148"](/images/figura148.jpg) - Figura 148
+
+!["Figura 149"](/images/figura149.jpg) - Figura 149
+
+---
+
+## Conclusão
+
+O objetivo deste conteúdo foi abordar o essencial sobre ETL e Pentaho. Existem diversos pontos a serem explorados, como o dimensionamento de ambientes para grandes cargas, outras implementações de modificação lenta, a criação de job complexos, o consumo de serviços pelo PDI, entre outros pontos, cabendo a você agora, se aprofundar mais.

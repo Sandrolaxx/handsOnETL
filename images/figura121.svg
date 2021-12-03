@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1000px" height="650px" viewBox="0 0 1000 650" style="enable-background:new 0 0 1000 650;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;stroke:#3D6480;stroke-width:2;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#E90419;stroke-width:2;stroke-miterlimit:10;}
+	.st3{fill:#3D6480;}
+	.st4{fill:#303030;}
+	.st5{font-family:'Arial';}
+	.st6{font-size:17.63px;}
+	.st7{letter-spacing:-1;}
+</style>
+<title>7-vetores-fase6-Smart-City-TDS-2019</title>
+<g id="Layer_32">
+	<rect class="st0" width="1000" height="651"/>
+	<path class="st1" d="M734,283.6h36c3.3,0,6,2.7,6,6v36c0,3.3-2.7,6-6,6h-36c-3.3,0-6-2.7-6-6v-36C728,286.3,730.6,283.6,734,283.6z
+		"/>
+	<path class="st1" d="M446,283.6h36c3.3,0,6,2.7,6,6v36c0,3.3-2.7,6-6,6h-36c-3.3,0-6-2.7-6-6v-36C440,286.3,442.7,283.6,446,283.6z
+		"/>
+	<rect x="445.9" y="292.3" class="st1" width="18.4" height="5.9"/>
+	<rect x="445.9" y="300.7" class="st1" width="35.6" height="5.9"/>
+	<rect x="445.9" y="309.2" class="st1" width="18.4" height="5.9"/>
+	<rect x="445.9" y="317.6" class="st1" width="35.6" height="5.9"/>
+	<line class="st2" x1="468.2" y1="292.3" x2="474" y2="298.1"/>
+	<line class="st2" x1="474" y1="292.3" x2="468.2" y2="298.1"/>
+	<line class="st2" x1="468.2" y1="309.2" x2="474" y2="315"/>
+	<line class="st2" x1="474" y1="309.2" x2="468.2" y2="315"/>
+	<path class="st1" d="M152.4,283.6h36c3.3,0,6,2.7,6,6v36c0,3.3-2.7,6-6,6h-36c-3.3,0-6-2.7-6-6v-36
+		C146.4,286.3,149,283.6,152.4,283.6z"/>
+	<line class="st1" x1="179.2" y1="317.9" x2="185.6" y2="324.8"/>
+	<path class="st3" d="M179.1,323.4c0-0.2,0.3-0.3,0.5-0.3c0,0,0,0,0,0l5.9,1.5l-1.1-6c-0.1-0.2,0-0.4,0.3-0.5c0.2-0.1,0.4,0,0.5,0.3
+		c0,0,0,0.1,0,0.1l1.2,6.6c0,0.2-0.1,0.4-0.3,0.5c-0.1,0-0.1,0-0.2,0l-6.5-1.7c-0.1,0-0.1-0.1-0.2-0.1
+		C179.1,323.7,179,323.6,179.1,323.4z"/>
+	<polyline class="st1" points="172.8,320.1 157.6,320.1 157.6,294.9 182.8,294.9 182.8,309.6 	"/>
+	<line class="st1" x1="180.6" y1="311.5" x2="157.6" y2="311.5"/>
+	<line class="st1" x1="182.8" y1="303" x2="157.6" y2="303"/>
+	<line class="st1" x1="174.5" y1="311.5" x2="174.5" y2="294.9"/>
+	<line class="st1" x1="165.2" y1="311.5" x2="165.2" y2="294.9"/>
+	<line class="st1" x1="488" y1="308.8" x2="726.7" y2="308.8"/>
+	<line class="st1" x1="194.1" y1="308.8" x2="439.7" y2="308.8"/>
+	<polygon class="st3" points="649.1,308.7 643.7,300.7 665,308.8 643.7,316.6 	"/>
+	<polygon class="st3" points="372.5,308.7 367.1,300.7 388.4,308.8 367.1,316.6 	"/>
+	<text transform="matrix(1 0 0 1 543.76 360.69)" class="st4 st5 st6">Dimension lookup/update DIM_VENDA_VENDEDOR</text>
+	<text transform="matrix(1 0 0 1 411.61 360.69)" class="st4 st5 st6">Select values</text>
+	<text transform="matrix(1 0 0 1 39.86 360.69)" class="st4 st5 st6 st7">T</text>
+	<text transform="matrix(1 0 0 1 48.67 360.69)" class="st4 st5 st6">able input STG_FUNCIONARIO</text>
+	<polyline class="st1" points="739,295.8 739,321.1 754.2,321.1 	"/>
+	<polygon class="st3" points="736,296.6 739,291.4 742,296.6 	"/>
+	<line class="st1" x1="739" y1="321.1" x2="755" y2="305.1"/>
+	<polygon class="st3" points="756.5,307.8 758,302 752.3,303.6 	"/>
+	<circle class="st1" cx="761.4" cy="318.1" r="4.3"/>
+	<line class="st1" x1="764.6" y1="321.1" x2="768.2" y2="325.4"/>
+</g>
+</svg>

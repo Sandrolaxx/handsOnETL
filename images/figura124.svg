@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="998px" height="520px" viewBox="0 0 998 520" style="enable-background:new 0 0 998 520;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;stroke:#3D6480;stroke-width:2;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#E90419;stroke-width:2;stroke-miterlimit:10;}
+	.st3{fill:#3D6480;}
+	.st4{fill:#F4E4CB;stroke:#3D6480;stroke-width:2;stroke-miterlimit:10;}
+	.st5{fill:#303030;}
+	.st6{font-family:'Arial';}
+	.st7{font-size:12.03px;}
+</style>
+<title>7-vetores-fase6-Smart-City-TDS</title>
+<rect x="0" y="0" class="st0" width="1000" height="520"/>
+<g id="Layer_34">
+	<path class="st1" d="M164.8,283.9h25.1c3.3,0,6,2.7,6,6V315c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C158.8,286.6,161.4,283.9,164.8,283.9z"/>
+	<path class="st1" d="M773.5,175.4h25.1c3.3,0,6,2.7,6,6v25.1c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C767.5,178,770.2,175.4,773.5,175.4z"/>
+	<path class="st1" d="M883.8,287.3H909c3.3,0,6,2.7,6,6v25.1c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C877.8,289.9,880.5,287.3,883.8,287.3z"/>
+	<rect x="772" y="182.1" class="st1" width="14.2" height="4.6"/>
+	<rect x="772" y="188.6" class="st1" width="27.6" height="4.6"/>
+	<rect x="772" y="195.3" class="st1" width="14.2" height="4.6"/>
+	<rect x="772" y="201.8" class="st1" width="27.6" height="4.6"/>
+	<line class="st2" x1="789.3" y1="182.1" x2="793.8" y2="186.6"/>
+	<line class="st2" x1="793.8" y1="182.1" x2="789.3" y2="186.6"/>
+	<line class="st2" x1="789.3" y1="195.3" x2="793.8" y2="199.8"/>
+	<line class="st2" x1="793.8" y1="195.3" x2="789.3" y2="199.8"/>
+	<line class="st1" x1="885.7" y1="294.4" x2="890.9" y2="299.9"/>
+	<path class="st3" d="M884.4,298.5c0.1-0.2,0.3-0.3,0.5-0.3l0,0l5.9,1.5l-1.1-6c0-0.2,0.1-0.4,0.3-0.5s0.4,0.1,0.5,0.3l0,0l1.3,6.6
+		c0,0.2-0.1,0.4-0.3,0.5c-0.1,0-0.1,0-0.2,0l-6.5-1.7C884.4,299,884.3,298.8,884.4,298.5L884.4,298.5L884.4,298.5z"/>
+	<polyline class="st1" points="894.9,297.9 906.6,297.9 906.6,317.4 887.1,317.4 887.1,305.9 	"/>
+	<line class="st1" x1="888.8" y1="304.4" x2="906.6" y2="304.4"/>
+	<line class="st1" x1="887.1" y1="311" x2="906.6" y2="311"/>
+	<line class="st1" x1="893.6" y1="304.4" x2="893.6" y2="317.4"/>
+	<line class="st1" x1="900.8" y1="304.4" x2="900.8" y2="317.4"/>
+	<path class="st1" d="M82.5,174.8h25.1c3.3,0,6,2.7,6,6v25.1c0,3.3-2.7,6-6,6H82.5c-3.3,0-6-2.7-6-6v-25.1
+		C76.5,177.4,79.2,174.8,82.5,174.8z"/>
+	<line class="st1" x1="101.9" y1="201.4" x2="106.8" y2="206.4"/>
+	<path class="st3" d="M100.2,205.1c0.1-0.2,0.3-0.3,0.5-0.3l0,0l5.9,1.5l-1.1-6c0-0.2,0.1-0.4,0.3-0.5c0.2,0,0.4,0.1,0.5,0.3l0,0
+		l1.2,6.6c0,0.2-0.1,0.4-0.3,0.5c-0.1,0-0.1,0-0.2,0l-6.5-1.7C100.3,205.5,100.2,205.4,100.2,205.1L100.2,205.1z"/>
+	<polyline class="st1" points="97,203 85.3,203 85.3,183.5 104.8,183.5 104.8,194.9 	"/>
+	<line class="st1" x1="103.1" y1="196.4" x2="85.3" y2="196.4"/>
+	<line class="st1" x1="104.8" y1="189.8" x2="85.3" y2="189.8"/>
+	<line class="st1" x1="98.3" y1="196.4" x2="98.3" y2="183.5"/>
+	<line class="st1" x1="91.1" y1="196.4" x2="91.1" y2="183.5"/>
+	<path class="st4" d="M175.5,290.3c-4.1,0-7.5,0.9-7.5,2v15.2c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2v-15.2
+		C183,291.1,179.6,290.3,175.5,290.3z"/>
+	<path class="st1" d="M168,292.3c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M168,296.6c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M168,302.1c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<circle class="st0" cx="183.5" cy="308.8" r="6.2"/>
+	<circle class="st1" cx="183.4" cy="308.9" r="3.2"/>
+	<line class="st1" x1="185.7" y1="311.4" x2="188.5" y2="314.6"/>
+	<path class="st1" d="M413.3,283.9h25.1c3.3,0,6,2.7,6,6V315c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C407.3,286.6,410,283.9,413.3,283.9z"/>
+	<path class="st4" d="M424,290.3c-4.1,0-7.5,0.9-7.5,2v15.2c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2v-15.2
+		C431.5,291.1,428.1,290.3,424,290.3z"/>
+	<path class="st1" d="M416.5,292.3c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M416.5,296.6c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M416.5,302.1c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<circle class="st0" cx="432.1" cy="308.8" r="6.2"/>
+	<circle class="st1" cx="432" cy="308.9" r="3.2"/>
+	<line class="st1" x1="434.3" y1="311.4" x2="437.1" y2="314.6"/>
+	<path class="st1" d="M651.6,283.9h25.1c3.3,0,6,2.7,6,6V315c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C645.6,286.6,648.3,283.9,651.6,283.9z"/>
+	<path class="st4" d="M662.3,290.3c-4.1,0-7.5,0.9-7.5,2v15.2c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2v-15.2
+		C669.8,291.1,666.5,290.3,662.3,290.3z"/>
+	<path class="st1" d="M654.8,292.3c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M654.8,296.6c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M654.8,302.1c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<circle class="st0" cx="670.4" cy="308.8" r="6.2"/>
+	<circle class="st1" cx="670.3" cy="308.9" r="3.2"/>
+	<line class="st1" x1="672.6" y1="311.4" x2="675.4" y2="314.6"/>
+	<path class="st1" d="M292.8,174.8h25.1c3.3,0,6,2.7,6,6v25.1c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C286.8,177.4,289.5,174.8,292.8,174.8z"/>
+	<path class="st4" d="M303.5,181c-4.1,0-7.5,0.9-7.5,2v15.2c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2v-15.2C311,181.9,307.6,181,303.5,181z"
+		/>
+	<path class="st1" d="M296,183.1c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M296,187.4c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M296,192.9c0,1.1,3.4,2,7.5,2s7.5-0.9,7.5-2"/>
+	<circle class="st0" cx="311.6" cy="199.5" r="6.2"/>
+	<circle class="st1" cx="311.5" cy="199.9" r="3.2"/>
+	<line class="st1" x1="313.7" y1="202.3" x2="316.5" y2="205.4"/>
+	<path class="st1" d="M527.1,174.8h25.1c3.3,0,6,2.7,6,6v25.1c0,3.3-2.7,6-6,6h-25.1c-3.3,0-6-2.7-6-6v-25.1
+		C521.1,177.4,523.8,174.8,527.1,174.8z"/>
+	<path class="st4" d="M537.8,181c-4.1,0-7.5,0.9-7.5,2v15.2c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2v-15.2C545.3,181.9,541.9,181,537.8,181
+		z"/>
+	<path class="st1" d="M530.3,183.1c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M530.3,187.4c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<path class="st1" d="M530.3,192.9c0,1.1,3.3,2,7.5,2s7.5-0.9,7.5-2"/>
+	<circle class="st0" cx="545.9" cy="199.5" r="6.2"/>
+	<circle class="st1" cx="545.8" cy="199.9" r="3.2"/>
+	<line class="st1" x1="548" y1="202.3" x2="550.8" y2="205.4"/>
+	<line class="st1" x1="112.6" y1="207.1" x2="160.4" y2="287.8"/>
+	<line class="st1" x1="195.9" y1="287.8" x2="287.9" y2="207.1"/>
+	<line class="st1" x1="322.8" y1="207.1" x2="407.3" y2="287.8"/>
+	<line class="st1" x1="444.4" y1="290.3" x2="523.2" y2="208.8"/>
+	<line class="st1" x1="558.2" y1="205.5" x2="645.9" y2="290.3"/>
+	<line class="st1" x1="683" y1="290.3" x2="769.7" y2="208.4"/>
+	<text transform="matrix(1 0 0 1 23.9156 233.572)" class="st5 st6 st7">T</text>
+	<text transform="matrix(1 0 0 1 29.9256 233.572)" class="st5 st6 st7">able input STG_VENDAS</text>
+	<text transform="matrix(1 0 0 1 180.9956 233.572)" class="st5 st6 st7">Database lookup DIM_VENDA_PROMOCAO</text>
+	<text transform="matrix(1 0 0 1 440.8256 233.572)" class="st5 st6 st7">Database lookup DIM_VENDA_LOJ</text>
+	<text transform="matrix(1 0 0 1 633.3956 233.572)" class="st5 st6 st7">A</text>
+	<text transform="matrix(1 0 0 1 749.8456 233.572)" class="st5 st6 st7">Select values</text>
+	<text transform="matrix(1 0 0 1 57.9856 341.342)" class="st5 st6 st7">Database lookup DIM_VENDA_VENDEDOR</text>
+	<text transform="matrix(1 0 0 1 313.7056 341.342)" class="st5 st6 st7">Database lookup DIM_VENDA_CLIENTE</text>
+	<text transform="matrix(1 0 0 1 549.4656 341.342)" class="st5 st6 st7">Database lookup DIM_VENDA_PRODU</text>
+	<text transform="matrix(1 0 0 1 763.4156 341.342)" class="st5 st6 st7">T</text>
+	<text transform="matrix(1 0 0 1 770.5456 341.342)" class="st5 st6 st7">O</text>
+	<text transform="matrix(1 0 0 1 818.7356 341.342)" class="st5 st6 st7">T</text>
+	<text transform="matrix(1 0 0 1 824.7456 341.342)" class="st5 st6 st7">able output </text>
+	<text transform="matrix(1 0 0 1 887.6256 341.342)" class="st5 st6 st7">F</text>
+	<text transform="matrix(1 0 0 1 894.3056 341.342)" class="st5 st6 st7">A</text>
+	<text transform="matrix(1 0 0 1 901.4356 341.342)" class="st5 st6 st7">T</text>
+	<text transform="matrix(1 0 0 1 908.5656 341.342)" class="st5 st6 st7">O_VENDAS</text>
+	<line class="st1" x1="804.7" y1="205.3" x2="879.2" y2="290.3"/>
+	<polygon class="st3" points="138.7,260.6 151.1,271.3 148.3,255.1 145.2,259.9 	"/>
+	<polygon class="st3" points="241.3,246.8 243.1,255.3 250,240.4 234.6,243.8 	"/>
+	<polygon class="st3" points="374.8,264.4 388.4,269.8 382.2,255.4 380.9,262.1 	"/>
+	<polygon class="st3" points="482.7,242.3 488.9,244.3 490.6,250.5 496.1,236.4 	"/>
+	<polygon class="st3" points="612.9,266.6 626.8,271.9 620.9,257.8 619,264.4 	"/>
+	<polygon class="st3" points="726.3,240.4 731.9,243 734.3,249.4 739.7,235.9 	"/>
+	<polygon class="st3" points="853.5,268.3 864.4,273.4 860.7,261.6 858.9,267.1 	"/>
+</g>
+</svg>
