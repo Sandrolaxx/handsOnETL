@@ -395,3 +395,393 @@ O primeiro estágio do ETL (Extract) será a extração dos dados dos arquivos c
 
 !["Figura 17"](/images/figura17.jpg) - Figura 17
 
+* De um duplo clique no step e configure-o. Nome, filename e delimitardor, no caso, nosso arquivo utiliza ';'. **Importante: deixar selecionado a opção de cabeçalhho (Header row present).**
+
+!["Figura 18"](/images/figura18.jpg) - Figura 18
+
+* Clique em Obtem campos e, em seguida, em Fechar. O PDI buscará os dados e fará sugestões do tipo de dados e tamanho.
+
+!["Figura 19"](/images/figura19.jpg) - Figura 19
+
+* Clique em Preview, depois OK para até 100 linhas e visualize para testar a extração. Clique em Fechar e retorne para a transformação.
+
+!["Figura 20"](/images/figura20.jpg) - Figura 20
+
+* Na aba Desing \ Transform selecione, arraste e solte na transformação o step Select values. Sempre use o filtro Steps, caso queira encontrar um componente mais rápido.
+
+!["Figura 21"](/images/figura21.jpg) - Figura 21
+
+* Crie um hop entre eles, clique no step CSV file input, depois mantenha pressionanda a tecla SHIFT e arraste um hop para o Select Values, selecione Main ouput of select.
+
+!["Figura 22"](/images/figura22.jpg) - Figura 22
+
+* Dê um duplo clique no Select values e acione o botão Get Fields to select. Os campos extraídos do CSV serão obtidos para serem mapeados. Clique em OK.
+
+!["Figura 23"](/images/figura23.jpg) - Figura 23
+
+* Na aba Desing \ Output selecione, arrase e solte o step Table output na transformação. Crie um hop entre o Select values e o Table output.
+
+!["Figura 24"](/images/figura24.jpg) - Figura 24
+
+* Na aba Desing \ Output selecione, arrase e solte o step Table output na transformação. Crie um hop entre o Select values e o Table output.
+
+!["Figura 24"](/images/figura24.jpg) - Figura 24
+
+* Dê um duplo clique no Table output e configure-o, altere o nome, selecione a conexão com o Postgres, clique em Navega... de Target table e selecione a tabela STG_ARQ_PROMOCOES, deixe um commit a cada 1000 linhas inseridas e trunque a tabela para apagar todos os dados, antes de qualquer insert.
+
+!["Figura 25"](/images/figura25.jpg) - Figura 25
+
+* Clique em Ok e novamente em OK.
+
+!["Figura 26"](/images/figura26.jpg) - Figura 26
+
+*  Dê um duplo clique, novamente, no Select values e acione o botão Edit Mapping, clique OK para continuar.
+
+!["Figura 27"](/images/figura27.jpg) - Figura 27
+
+*  Os campos extraídos do csv serão listados em Source Fields e as colunas da tabela de destino, em Target Fields. Cabe a nós selecionarmos os pares correspondentes e adicionar par por par.
+
+!["Figura 28"](/images/figura28.jpg) - Figura 28
+
+*  Selecionados os pares, clique em OK.
+
+!["Figura 29"](/images/figura29.jpg) - Figura 29
+
+*  Novamente em OK.
+
+!["Figura 30"](/images/figura30.jpg) - Figura 30
+
+*  Salve a transformação de extração csv e execute-a, selecione Log detalhado e clique em Run.
+
+!["Figura 31"](/images/figura31.jpg) - Figura 31
+
+*  Resultado positivo, o log é apresentado.
+
+!["Figura 32"](/images/figura32.jpg) - Figura 32
+
+*  As métricas quantitativas são apresentadas na aba Step Metrics, três linhas lidas e três escritas.
+
+!["Figura 33"](/images/figura33.jpg) - Figura 33
+
+*  As métricas em milissegundos por step são apresentadas na aba Metrics.
+
+!["Figura 34"](/images/figura34.jpg) - Figura 34
+
+*  Os dados podem ser vistos na aba Preview data.
+
+!["Figura 35"](/images/figura35.jpg) - Figura 35
+
+---
+
+## Arquivos XLSX
+
+* Crie uma transformação de nome TRANS_EXTRACT_XLSX. Na aba Design \ input selecione, arraste e solte o step Microsoft Excel Input. Faça o mesmo com um Select values e com um Table output. Crie os hops entre eles.
+
+!["Figura 36"](/images/figura36.svg) - Figura 36
+
+* Dê um duplo clique em Microsoft Excel Input e configure nome, selecione Excel 2007 XLSX, navegue até o arquivo em File or directory e clique em Add. O arquivo será adicionado em Selected files.
+
+!["Figura 37"](/images/figura37.jpg) - Figura 37
+
+* Na aba Sheets, clique em Get sheetname(s) e selecione OBS, ela será adicionada na coluna Sheet name. Só um OBS deve ficar na coluna.
+
+!["Figura 38"](/images/figura38.jpg) - Figura 38
+
+* Na aba Content, mantenha Header e marque Stop on empty row.
+
+!["Figura 39"](/images/figura39.jpg) - Figura 39
+
+* Na aba Fields, clique em Get Fields from header row... e as colunas de cabeçalho serão obtidas.
+
+!["Figura 40"](/images/figura40.jpg) - Figura 40
+
+* Clique em Preview rows e em Ok, para até 1000 linhas. Os dados do Excel serão exibidos para visualização e teste.
+
+!["Figura 41"](/images/figura41.jpg) - Figura 41
+
+* Configure o Table output (Nome, conexão, target table e truncate), conforme imagem.
+
+!["Figura 42"](/images/figura42.jpg) - Figura 42
+
+* No Select Values, clique em Get fields to select e, depois, faça o Edit Mapping, igual ao processo de mapeamento que fizemos na extração do csv.
+
+!["Figura 43"](/images/figura43.jpg) - Figura 43
+
+* Execute a transformação e, caso tudo tenha sido feito e configurado conforme as instruções, o log não trará erros e extração será feita com sucesso.
+
+!["Figura 44"](/images/figura44.jpg) - Figura 44
+
+---
+
+## Pentaho PDI - Extração de dados da base SV para Staging
+
+O segundo estágio do ETL (Extract) será a extração dos dados das tabelas do sistema SV para gravação em tabelas cópias na Staging Area. Esse processo geralmente é executado após todas as rotinas de negócio e backups, para não concorrer e degradar o ambiente de produção.
+
+---
+
+## Extração dos dados sobre cliente.
+
+Crie uma nova transformação de nome TRANS_EXTRACT_CLIENTE, nosso objetivo será extrair os dados de Cliente e Tipo de Cliente para as tabelas correspondentes na Staging.
+
+* Na transformação, inclua os steps Table input, Select values e Table output. Crie os hops entre eles. Dê um duplo clique no Table input, configure o nome e clique em Get SQL select statement (Aguarde enquanto Getting information from the database), depois selecione T_SV_Cliente e clique em OK).
+
+!["Figura 45"](/images/figura45.jpg) - Figura 45
+
+* Clique em Sim para incluir os nomes dos atributos na query, o comando SQL será gerado pelo PDI.
+
+!["Figura 46"](/images/figura46.jpg) - Figura 46
+
+* Clique em Preview e os dados extraídos da tabela serão apresentados.
+
+!["Figura 47"](/images/figura47.jpg) - Figura 47
+
+* Configure o Table output (Nome, conexão, target table e truncate), conforme imagem.
+
+!["Figura 48"](/images/figura48.jpg) - Figura 48
+
+* No Select Values, clique em Get fields to select e depois, faça o Edit Mapping, igual ao processo de mapeamento que fizemos nos arquivos, mas desta vez, como os atributos de ambas as tabelas possuem o mesmo nome, o PDI já trará todo o mapeamento feito. Cabe a nós, apenas conferir.
+
+!["Figura 49"](/images/figura49.jpg) - Figura 49
+
+* Execute a transformação e, novamente, caso tudo tenha sido feito e configurado conforme as instruções, o log não trará erros e a extração entre tabelas será realizada com sucesso.
+
+!["Figura 50"](/images/figura50.jpg) - Figura 50
+
+* Na transformação, inclua mais três steps para a extração de Tipo Cliente, um Table input, um Select values e outro Table output. Crie os hops entre eles.
+
+!["Figura 51"](/images/figura51.svg) - Figura 51
+
+* Configure o Table input e depois o Table output.
+
+!["Figura 52"](/images/figura52.jpg) - Figura 52
+
+* Por último, faça o Get Fields e o Edit Mapping, no Select values.
+
+!["Figura 53"](/images/figura53.jpg) - Figura 53
+
+* Execute a transformação, o log não trará erros e a aba Step Metrics apresentará a contagem de leitura e gravação dos dois fluxos da transformação.
+
+!["Figura 54"](/images/figura54.jpg) - Figura 54
+
+---
+
+## Praticando a Extração de dados no PDI
+
+Agora, que você já conhece o mecanismo de extração, seleção e gravação entre tabelas, crie as demais transformações para praticar e importar os dados necessários para as próximas etapas do ETL (Transform e Load).
+
+* TRANS_EXTRACT_PRODUTO:<br/> T_SV_UNIDADE_MEDIDA para STG_T_SV_UNIDADE_MEDIDA <br/> T_SV_PRODUTO para STG_T_SV_PRODUTO
+
+!["Figura 55"](/images/figura55.svg) - Figura 55
+
+* TRANS_EXTRACT_NF:<br/> T_SV_NOTA_FISCAL para STG_T_SV_NOTA_FISCAL <br/> T_SV_ITEM_NOTA_FISCAL para STG_T_SV_ITEM_NOTA_FISCAL <br/> T_SV_CLASSIFICACAO_FISCAL para STG_T_SV_CLASSIFICACAO_FISCAL
+
+!["Figura 56"](/images/figura56.svg) - Figura 56
+
+* TRANS_EXTRACT_FUNCIONARIO:<br/> T_SV_FUNCIONARIO para STG_T_SV_FUNCIONARIO
+
+!["Figura 57"](/images/figura57.svg) - Figura 57
+
+* TRANS_EXTRACT_LOJA:<br/> T_SV_LOJA  para STG_T_SV_LOJA <br/> T_SV_UF  para STG_T_SV_UF <br/> T_SV_CIDADE para STG_T_SV_CIDADE <br/> T_SV_LOGRADOURO para STG_T_SV_LOGRADOURO <br/> T_SV_ENDERECO para STG_T_SV_ENDERECO
+
+!["Figura 58"](/images/figura58.svg) - Figura 58
+
+---
+
+## Pentaho PDI - Transformação de dados na Staging
+
+**Junções:** O objetivo desta etapa do ETL é implementar junções dentro da staging area, após a extração dos dados do sistema SV. A junções que implementaremos serão desnormalizações, muito comum em ETLs para preparar a carga em dimensões de modelos Estrela. A primeira desnormalização será empregada para facilitar as pesquisas que serão feitas no Data Mart através da dimensão Cliente.
+
+---
+
+## Transformação de Cliente
+
+* Crie uma transformação chamada TRANS_TRANSFORM_CLIENTE, adicione um step Table Input. Em Lookup, arraste um Database lookup, depois um Select values e um Table Input. Crie os hops entre eles.
+
+!["Figura 59"](/images/figura59.svg) - Figura 59
+
+* Configure o Table Input para obter os dados da tabela STG_T_SV_CLIENTE.
+
+!["Figura 60"](/images/figura60.jpg) - Figura 60
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_TIPO_CLIENTE. Clique em Obtem campos e deixe apenas o CD_TIPO (selecione as demais linhas e clique em Del) e, depois, clique em Obtem campos lookup, o resultado deve ficar conforme a Figura 61.
+
+!["Figura 61"](/images/figura61.jpg) - Figura 61
+
+* Duplo clique em Table output e configure-o, conforme a Figura 62.
+
+!["Figura 62"](/images/figura62.jpg) - Figura 62
+
+* O resultado do mapeamento será apresentado.
+
+!["Figura 64"](/images/figura64.jpg) - Figura 64
+
+* Execute a transformação, o log não trará erros e a aba Preview data apresentará os dados juntados pelo fluxo e armazenados na tabela STG_CLIENTE, sem uma linha de código.
+
+!["Figura 65"](/images/figura65.jpg) - Figura 65
+
+---
+
+## Transformação de Produto
+
+* A segunda junção será entre Produto e Unidade de Medida. Para implementá-la, crie uma transformação chamada TRANS_TRANSFORM_PRODUTO, adicione um step Table Input. Em Lookup, arraste um Database lookup para Unidade de Medida, depois um Select values e um Table Input. Renomeie os componentes e crie os hops entre eles.
+
+!["Figura 66"](/images/figura66.svg) - Figura 66
+
+* Configure o Table Input para obter os dados da tabela STG_T_SV_PRODUTO
+
+!["Figura 67"](/images/figura67.jpg) - Figura 67
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_UNIDADE_MEDIDA. Clique em Obtem campos e deixe apenas o CD_UNIDADE_MEDIDA (selecione as demais linhas e clique em Del) e, depois, clique em Obtem campos lookup, o resultado deve ficar conforme a Figura 68.
+
+!["Figura 68"](/images/figura68.jpg) - Figura 68
+
+* Duplo clique em Table output e configure-o, conforme imagem. Para evitar erros na Transformação, configure Target table através do botão Navega...
+
+!["Figura 69"](/images/figura69.jpg) - Figura 69
+
+* Duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme imagens. O campo CD_PRODUTO será associado duas vezes, uma com SK_PRODUTO e a segunda com NK_PRODUTO. Para que você possa fazer isso, desmarque as duas opções Hide assigned.
+
+!["Figura 70.1"](/images/figura70.1.jpg) - Figura 70.1
+!["Figura 70.2"](/images/figura70.2.jpg) - Figura 70.2
+
+* O resultado do mapeamento será apresentado.
+
+!["Figura 71"](/images/figura71.jpg) - Figura 71
+
+* Execute a transformação, o log não trará erros e a aba Step Metrics apresentará a quantidade de linhas juntadas pelo fluxo e armazenadas na tabela STG_PRODUTO.
+
+!["Figura 72"](/images/figura72.jpg) - Figura 72
+
+---
+
+## Transformação de Promoção
+
+* A terceira junção será entre Promoções, vindas do arquivo csv e Observações de promoções, obtidas no arquivo xlsx. Para implementá-la, crie uma transformação chamada TRANS_TRANSFORM_PROMOCAO, adicione um step Table Input. Em Lookup, arraste um Database lookup, depois, um Select values e um Table Input. Renomeie os componentes e crie os hops entre eles.
+
+!["Figura 73"](/images/figura73.svg) - Figura 73
+
+* Configure o Table Input para obter os dados da tabela STG_ARQ_PROMOCOES.
+
+!["Figura 74"](/images/figura74.jpg) - Figura 74
+
+* Configure o Database lookup para obter os dados da tabela STG_ARQ_PROMOCOES_OBS. Clique em Obtem campos e deixe apenas o CD_PROMOCAO e, depois, clique em Obtem campos lookup, o resultado deve ficar conforme a Figura 75.
+
+!["Figura 75"](/images/figura75.jpg) - Figura 75
+
+* Duplo clique em Table output e configure-o, conforme imagem. Para evitar erros na Transformação, configure Target table através do botão Navega.
+
+!["Figura 76"](/images/figura76.jpg) - Figura 76
+
+* Duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme a Figura 77.
+
+!["Figura 77"](/images/figura77.jpg) - Figura 77
+
+* O campo CD_PROMOCAO será associado duas vezes, uma com SK_PROMOCAO e a segunda com NK_PROMOCAO. **Lembre-se: para que você possa fazer isso, de desmarcar a opção Hide assigned.**
+
+!["Figura 78"](/images/figura78.jpg) - Figura 78
+
+* O resultado do mapeamento será apresentado.
+
+!["Figura 79"](/images/figura79.jpg) - Figura 79
+
+* Execute a transformação, o log não trará erros e a aba Step Metrics apresentará a quantidade de linhas juntadas pelo fluxo e armazenadas na tabela STG_PRODUTO.
+
+!["Figura 80"](/images/figura80.jpg) - Figura 80
+
+---
+
+## Transformação de Loja
+
+* A terceira junção será mais complexa. Em alguns casos, teremos de realizar a desnormalização envolvendo mais de duas tabelas. A transformação de Loja é um bom exemplo disso. Nesta transformação, faremos Lookups para Loja, Endereço, Logradouro, Cidade e UF.
+
+!["Figura 81"](/images/figura81.svg) - Figura 81
+
+* Crie uma transformação chamada TRANS_TRANSFORM_LOJA, adicione um step Table Input. Em Lookup, arraste um Database lookup para cada tabela (conforme a Figura 82), depois um Select values e um Table Input. Renomeie os componentes e crie os hops entre eles.
+
+!["Figura 82"](/images/figura82.svg) - Figura 82
+
+* Configure o Table input para obter os dados da tabela STG_T_SV_LOJA.
+
+!["Figura 83"](/images/figura83.jpg) - Figura 83
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_ENDERECO. Clique em Obtem campos e deixe apenas o CD_ENDERECO (selecione as demais linhas e clique em Del) e, depois, clique em Obtem campos lookup e deixe todos os campos obtidos, o resultado deve ficar conforme a Figura 84.
+
+!["Figura 84"](/images/figura84.jpg) - Figura 84
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_LOGRADOURO. Clique em Obtem campos e deixe apenas o CD_LOGRADOURO (selecione as demais linhas e clique em Del) e, depois, clique em Obtem campos lookup e deixe todos os campos obtidos, o resultado deve ficar conforme a Figura 85.
+
+!["Figura 85"](/images/figura85.jpg) - Figura 85
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_CIDADE. Clique em Obtem campos e deixe apenas o CD_CIDADE e depois, clique em Obtem campos lookup e deixe todos os campos obtidos, o resultado deve ficar conforme a Figura 86.
+
+!["Figura 86"](/images/figura86.jpg) - Figura 86
+
+* Configure o Database lookup para obter os dados da tabela STG_T_SV_UF. Clique em Obtem campos e deixe apenas o CD_UF e, depois, clique em Obtem campos lookup e deixe todos os campos obtidos, o resultado deve ficar conforme a Figura 87.
+
+!["Figura 87"](/images/figura87.jpg) - Figura 87
+
+* Duplo clique em Table output e configure-o, conforme a Figura 88. Para evitar erros na Transformação, configure Target table através do botão Navega... 
+
+!["Figura 88"](/images/figura88.jpg) - Figura 88
+
+* Duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme imagens. Perceba que o Get Fields trouxe os campos de todos os Lookups.
+
+!["Figura 89"](/images/figura89.jpg) - Figura 89
+
+* O campo CD_LOJA será associado duas vezes, uma com SK_LOJA e a segunda com NK_LOJA, para que você possa fazer isso, desmarque as duas opções Hide assigned.
+
+!["Figura 90"](/images/figura90.jpg) - Figura 90
+
+* O resultado do mapeamento será apresentado.
+
+!["Figura 91"](/images/figura91.jpg) - Figura 91
+
+* Execute a transformação, o log não trará erros e a aba Preview Data apresentará os dados juntados pelo fluxo e armazenados na tabela STG_LOJA.
+
+!["Figura 92"](/images/figura92.jpg) - Figura 92
+
+---
+
+## Transformação de Funcionário
+
+Antes da carga dos dados de funcionários, na dimensão vendedor, precisamos transformá-los para disponibilizar melhores filtros aos usuários do nosso modelo estrela. A extração para a STG_SV_FUNCIONARIO trouxe um código que será de difícil entendimento para o usuário utilizar como filtro, o cd_faixa_bonificação.
+
+Para o usuário do nosso dimensional fica complicado compreender o que representa um funcionário de código de bonificação 3, sendo assim, precisamos criar uma legenda que decodifique este campo e apresente uma descrição clara, conforme a regra de negócios da empresa. Com componentes do Pentaho, vamos criar uma decodificação para tratar essa necessidade.
+
+Imagine que a área de negócio gostaria de ter um filtro com a descrição da bonificação com o código dela, algo do tipo: Faixa A – até 5.000 – 1 e Faixa B de 5001 até 10.000 – 2.
+
+* Como podemos fazer essa concatenação no ETL com o PDI? Vamos lá! Crie uma transformação chamada TRANS_TRANSFORM_FUNCIONARIO. Adicione um Table input, da aba Transform, adicione os steps Value Mapper e Concat Fields, depois um Select values e por fim, um Table output.
+
+!["Figura 93"](/images/figura93.jpg) - Figura 93
+
+* Duplo clique em Table input e configure-o, conforme a Figura 94.
+
+!["Figura 94"](/images/figura94.jpg) - Figura 94
+
+* Duplo clique em Table input e configure-o, conforme a Figura 95.
+
+!["Figura 95"](/images/figura95.jpg) - Figura 95
+
+* Duplo clique em Table input e configure-o, conforme a Figura 96.
+
+!["Figura 96"](/images/figura96.jpg) - Figura 96
+
+* Duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme a Figura 97.
+
+!["Figura 97"](/images/figura97.jpg) - Figura 97
+
+* Execute a transformação, o log não trará erros e a aba Preview data apresentará os dados juntados pela transformação e armazenados na tabela STG_FUNCIONARIO, sem uma linha de código.
+
+!["Figura 98"](/images/figura98.jpg) - Figura 98
+
+* Na aba Preview data podemos ver na coluna DS_FAIXA_BONIFICACAO o resultado de duas transformações muito comuns: a decodificação e a concatenação de valores.
+
+!["Figura 99"](/images/figura99.jpg) - Figura 99
+
+* Importante lembrarmos que, mais um tipo de transformação foi utilizado: a seleção, pois nem todos os atributos obtidos no Table Input foram gravados na tabela de destino. Veja na Figura 100.
+
+!["Figura 100"](/images/figura100.jpg) - Figura 100
+
+---
+
+## Transformação de Vendas
