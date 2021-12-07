@@ -46,6 +46,12 @@ Iremos subir uma instância local de postgres, há inúmeros tutoriais de como e
 Sem docker: https://www.devmedia.com.br/instalando-postgresql/23364
 <br>Com docker: https://felixgilioli.medium.com/como-rodar-um-banco-de-dados-postgres-com-docker-6aecf67995e1
 
+
+Caso já tenha o docker em seu sistema, execute o comando abaixo:
+```
+docker run --name postgres-teste -e POSTGRES_PASSWORD=1329 -p 5449:5432 -d postgres
+```
+
 ---
 
 ## O Spoon
@@ -357,7 +363,7 @@ Para criar as tabelas que receberão a extração dos dados do Sistema SV e dos 
 
 ## Criando as tabelas Dimensionais e Fato
 
-O modelo dimensional receberá a carga dos dados, após as transformações do processo ETL. Em projetos de porte, a criação destas tabelas ocorre em servidores específicos para o DW. Em nosso estudo de caso, criaremos em nossa área do Oracle FIAP, onde a Staging Area foi criada. Conecte-se utilizando o SQL Developer e execute o script [queryCriacaoTabelasDimensionais.sql](/arquivosETL/queryCriacaoTabelasDimensionais.sql).
+O modelo dimensional receberá a carga dos dados, após as transformações do processo ETL. Em projetos de porte, a criação destas tabelas ocorre em servidores específicos para o DW. Em nosso estudo de caso, criaremos em nossa área do Postgres local, onde a Staging Area foi criada. Conecte-se utilizando o DBeaver e execute o script [queryCriacaoTabelasDimensionais.sql](/arquivosETL/queryCriacaoTabelasDimensionais.sql).
 
 ---
 
@@ -641,7 +647,7 @@ Agora, que você já conhece o mecanismo de extração, seleção e gravação e
 
 * Duplo clique em Select values e configure-o com Get Fields e Edit Mapping, conforme imagens. O campo CD_PRODUTO será associado duas vezes, uma com SK_PRODUTO e a segunda com NK_PRODUTO. Para que você possa fazer isso, desmarque as duas opções Hide assigned.
 
-!["Figura 70.1"](/images/figura70.1.jpg) - Figura 70.1
+!["Figura 70.1"](/images/figura70.1.jpg) - Figura 70.1  Remova também do Mapping o campo DS_MARCA
 !["Figura 70.2"](/images/figura70.2.jpg) - Figura 70.2
 
 * O resultado do mapeamento será apresentado.
@@ -758,11 +764,11 @@ Imagine que a área de negócio gostaria de ter um filtro com a descrição da b
 
 !["Figura 94"](/images/figura94.jpg) - Figura 94
 
-* Duplo clique em Table input e configure-o, conforme a Figura 95.
+* Duplo clique em Value Mapper e configure-o, conforme a Figura 95.
 
 !["Figura 95"](/images/figura95.jpg) - Figura 95
 
-* Duplo clique em Table input e configure-o, conforme a Figura 96.
+* Duplo clique em Concat Fields e configure-o, conforme a Figura 96.
 
 !["Figura 96"](/images/figura96.jpg) - Figura 96
 
@@ -879,7 +885,7 @@ Então, vamos em frente!
 
 !["Figura 109"](/images/figura109.jpg) - Figura 109
 
-* No Dimension lookup/update, configure-o conforme a imagem. O Dimension Lookup usará o atributo SK_CLIENTE como surrogate key e incrementará o seu valor automaticamente; opcionalmente, poderíamos utilizar uma sequence do Oracle ou um atributo auto incremental, se utilizássemos um banco de dados com este tipo de campo.
+* No Dimension lookup/update, configure-o conforme a imagem. O Dimension Lookup usará o atributo SK_CLIENTE como surrogate key e incrementará o seu valor automaticamente; opcionalmente, poderíamos utilizar uma sequence do Postgres ou um atributo auto incremental, se utilizássemos um banco de dados com este tipo de campo.
 
 !["Figura 110"](/images/figura110.jpg) - Figura 110
 
@@ -946,7 +952,7 @@ Crie uma transformação chamada de TRANS_LOAD_PROMOCAO, adicione os componentes
 
 Como nos passos anteriores, crie uma transformação agora chamada TRANS_LOAD_VENDEDOR, adicione os componentes para a dimensão VENDEDOR, configure o Table input para a tabela STG_FUNCIONARIO, faça o Get Fields no Select values e configure o Dimension, conforme imagem:
 
-!["Figura 121"](/images/figura121.svg) - Figura 121
+!["Figura 121"](/images/figura121.png) - Figura 121
 
 !["Figura 122"](/images/figura122.jpg) - Figura 122
 
